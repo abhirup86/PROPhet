@@ -324,7 +324,7 @@ bool Network_function::train()
 // ########################################################
 // Fires the network to make predictions.
 
-vector<REAL> Network_function::evaluate()
+vector<REAL> Network_function::evaluate(int mpi_rank)
 {
 
   vector<REAL> results;

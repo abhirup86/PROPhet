@@ -143,7 +143,7 @@ bool System_data::iterate(vector<complex<REAL> > &output_data)
 bool System_data::iterate(vector<REAL>& output_data)
 {
 
-
+  
   if (indices.empty()) {
     my_N = data.size();
     for (int i=0; i<my_N; i++) {

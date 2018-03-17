@@ -470,17 +470,19 @@ bool Neural_network::train()
 // ########################################################
 // Use the network to make predictions.
 
-vector<REAL> Neural_network::evaluate()
+vector<REAL> Neural_network::evaluate(int mpi_rank)
 {
 
   results.clear();
-
+  REAL t_output = 0.0;
   for (int i_sys=0; i_sys<systems.size(); i_sys++) {
     int count = 0;
     REAL output = 0.0;
     vector<REAL> in;
 
     REAL cheap_sum = 0.0;
+    
+    systems[i_sys]->clear_output();
 
     while (systems[i_sys]->properties.iterate(values[0])) {
 
@@ -491,9 +493,12 @@ vector<REAL> Neural_network::evaluate()
       }
 
       count++;
-      output += params.output_variance*nodes.back().at(0)->evaluate(values.back());
+      t_output =  params.output_variance*nodes.back().at(0)->evaluate(values.back());
+      output += t_output;
+      systems[i_sys]->store_output(t_output*systems[i_sys]->Prefactor + params.output_mean);
 
     }
+    systems[i_sys]->write_cube(to_string(mpi_rank) + "." + to_string(i_sys));
 
     results.push_back(output*systems[i_sys]->Prefactor+params.output_mean);
 

@@ -68,6 +68,8 @@ public:
   double integrate();
 
   void variance(vector <int> bounds);
+  
+  void cube_header(ofstream &stream);
 
 
 

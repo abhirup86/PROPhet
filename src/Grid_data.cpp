@@ -311,3 +311,13 @@ void Grid_data::downsample(int step)
   this->data = downsample;
   //return downsample;
 }
+
+
+void Grid_data::cube_header(ofstream &stream) {
+    
+    stream << this->Nx() << " " << this->v1[0] << " " << this->v1[1] << " " << this->v1[2] << "\n";
+    stream << this->Ny() << " " << this->v2[0] << " " << this->v2[1] << " " << this->v2[2] << "\n";
+    stream << this->Nz() << " " << this->v3[0] << " " << this->v3[1] << " " << this->v3[2] << "\n";
+
+    
+}

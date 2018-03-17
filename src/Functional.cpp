@@ -353,7 +353,7 @@ void Functional::validate()
 
   this->Normalize_data(params.input_mean, params.input_variance);
   this->syncronize();
-  vector<REAL> output = net->evaluate();
+  vector<REAL> output = net->evaluate(mpi->rank());
   int Nroot = output.size();
   output = mpi->Gatherv(output);
   vector<int> train_flag (systems.size(),0);

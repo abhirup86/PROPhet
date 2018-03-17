@@ -66,7 +66,7 @@ public:
 
   virtual void print(ostream &output = std::cout);
 
-  vector<REAL> evaluate();
+  vector<REAL> evaluate(int mpi_rank = 0);
 
   // MD-specific routines
   virtual REAL evaluate_MD(int i_sys);

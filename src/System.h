@@ -57,6 +57,14 @@ public:
   System(map<string,string> files, Functional_params* F);
   System();
   ~System();
+  
+  void store_output(REAL x);
+  
+  void clear_output() {
+      this->output.clear();
+  }
+  
+  void write_cube(string fname);
 
   System_data properties;
 
@@ -73,6 +81,7 @@ private:
   vector<REAL> GW_gap;
   vector<REAL> DFT_gap;
   vector<REAL> volume;
+  vector <REAL> output;
 
 
   string directory;

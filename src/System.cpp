@@ -187,7 +187,49 @@ System::~System()
 // ########################################################
 // ########################################################
 
+// ########################################################
+//                       Store Output
+// ########################################################
+//
 
+
+void System::store_output(REAL x) {
+    this->output.push_back(x);
+}
+
+void System::write_cube(string fname) {
+    ofstream incube;
+    incube.open((fname + ".out.cube").c_str());
+    int cnt = 0;
+    incube << "This is the output from PROPhet\n";
+    incube << "\n";
+    incube << 1 << "\n";
+    this->Density.cube_header(incube);
+    incube << "1 1 0.0 0.0 0.0\n";
+    for (int i =0; i < this->output.size(); i ++) {
+        cnt += 1;
+        incube << setw(12) << this->output[i]; 
+        if (cnt%6 == 0.0) { incube << "\n"; }
+    }
+    incube.close();
+    incube.open((fname + ".in.cube").c_str());
+    
+    cnt = 0;
+    incube << "This is the input to PROPhet\n";
+    incube << "\n";
+    incube << "1\n";
+    this->Density.cube_header(incube);
+    incube << "1 1 0.0 0.0 0.0\n";
+    
+    for  (int i=0; i < this->Density.N(); i++) {
+        cnt += 1;
+        incube << setw(12) << this->Density[i];
+        if (cnt%6 == 0.0) { incube << "\n";}
+    }
+    incube.close();
+    //incube.close();
+    
+}
 
 
 

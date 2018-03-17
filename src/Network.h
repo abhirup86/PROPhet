@@ -73,7 +73,7 @@ public:
   }
 
   virtual bool train() = 0;
-  virtual vector<REAL> evaluate() = 0;
+  virtual vector<REAL> evaluate(int mpi_rank = 0) = 0;
 
 
   // MD specific routines
