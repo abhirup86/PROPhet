@@ -495,7 +495,7 @@ vector<REAL> Neural_network::evaluate(int mpi_rank)
       count++;
       t_output =  params.output_variance*nodes.back().at(0)->evaluate(values.back());
       output += t_output;
-      systems[i_sys]->store_output(t_output*systems[i_sys]->Prefactor + params.output_mean);
+      systems[i_sys]->store_output(t_output);//*systems[i_sys]->Prefactor + params.output_mean);
 
     }
     systems[i_sys]->write_cube(to_string(mpi_rank) + "." + to_string(i_sys));

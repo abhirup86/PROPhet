@@ -223,7 +223,7 @@ void System::write_cube(string fname) {
     
     for  (int i=0; i < this->Density.N(); i++) {
         cnt += 1;
-        incube << setw(12) << this->Density[i];
+        incube << " " << this->Density[i];
         if (cnt%6 == 0.0) { incube << "\n";}
     }
     incube.close();
