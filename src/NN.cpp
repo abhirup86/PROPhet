@@ -475,7 +475,19 @@ vector<REAL> Neural_network::evaluate(int mpi_rank)
 
   results.clear();
   REAL t_output = 0.0;
+  
+  vector <REAL> layer_output;
+  for (int layer = 0; layer < nodes.size() - 1; layer++) {
+    for (int node = 0; node < nodes[layer].size(); node++) {
+        //total_len++;
+        layer_output.push_back(0.0);
+    }
+  }
+  
+  ofstream layer_file;
+  layer_file.open("layer_ouput.dat");
   for (int i_sys=0; i_sys<systems.size(); i_sys++) {
+      std::fill(layer_output.begin(),layer_output.end(),0.0);
     int count = 0;
     REAL output = 0.0;
     vector<REAL> in;
@@ -483,12 +495,15 @@ vector<REAL> Neural_network::evaluate(int mpi_rank)
     REAL cheap_sum = 0.0;
     
     systems[i_sys]->clear_output();
-
+    //cout << total_len << endl;
+    
     while (systems[i_sys]->properties.iterate(values[0])) {
-
+      int loc = 0;
       for (int layer=0; layer<nodes.size()-1; layer++) {
         for (int node=0; node<nodes[layer].size(); node++) {
           values[layer+1][node] = nodes[layer][node]->evaluate(values[layer]);
+          layer_output[loc] += values[layer + 1][node];
+          loc++;
         }
       }
 
@@ -498,10 +513,15 @@ vector<REAL> Neural_network::evaluate(int mpi_rank)
       systems[i_sys]->store_output(t_output);//*systems[i_sys]->Prefactor + params.output_mean);
 
     }
+    //cout << layer_output.size() << "\n";
+    for (int zz = 0; zz < layer_output.size(); zz++) {
+        layer_output[zz] /= count;
+        layer_file << layer_output[zz] << " ";
+    }
     systems[i_sys]->write_cube(to_string(mpi_rank) + "." + to_string(i_sys));
 
     results.push_back(output*systems[i_sys]->Prefactor+params.output_mean);
-
+    layer_file << "\n";
   }
 
   return results;
